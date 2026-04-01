@@ -69,7 +69,7 @@ void Bomb::death(std::list<Bullet*>& bullets)
  * BULLET MOVE
  * Move the bullet along by one time period
  *********************************************/
-void Bullet::move(std::list<Effect*> & effects)
+void Bullet::move(std::list<Fragment*> & effects)
 {
    // inertia
    pt.add(v);
@@ -83,7 +83,7 @@ void Bullet::move(std::list<Effect*> & effects)
  * BOMB MOVE
  * Move the bomb along by one time period
  *********************************************/
-void Bomb::move(std::list<Effect*> & effects)
+void Bomb::move(std::list<Fragment*> & effects)
 {
     // kill if it has been around too long
     timeToDie--;
@@ -98,7 +98,7 @@ void Bomb::move(std::list<Effect*> & effects)
  * MISSILE MOVE
  * Move the missile along by one time period
  *********************************************/
-void Missile::move(std::list<Effect*> & effects)
+void Missile::move(std::list<Fragment*> & effects)
 {
     // kill if it has been around too long
    effects.push_back(new Exhaust(pt, v));
@@ -111,7 +111,7 @@ void Missile::move(std::list<Effect*> & effects)
  * SHRAPNEL MOVE
  * Move the shrapnel along by one time period
  *********************************************/
-void Shrapnel::move(std::list<Effect*> & effects)
+void Shrapnel::move(std::list<Fragment*> & effects)
 {
     // kill if it has been around too long
     timeToDie--;

@@ -21,12 +21,12 @@ class Bullet : public Flyer
 {
 protected:
     static Position dimensions;   // size of the screen
-    static std::list<Effect*>* activeEffects;
+    static std::list<Fragment*>* activeEffects;
     int value;                 // how many points does this cost?
 
 public:
     Bullet(double angle = 0.0, double speed = 30.0, double radius = 5.0, int value = 1);
-    static void setEffects(std::list<Effect*>& effects) { activeEffects = &effects; }
+    static void setEffects(std::list<Fragment*>& effects) { activeEffects = &effects; }
 
     // setters
     void setValue(int newValue) { value = newValue; }
