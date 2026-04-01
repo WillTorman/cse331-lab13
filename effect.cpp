@@ -1,12 +1,13 @@
 /***********************************************************************
  * Source File:
- *    Fragment : Pieces that fly off a dead bird
+ *    Fragment : Pieces that move off a dead bird
  * Author:
  *    Br. Helfrich
  * Summary:
- *    Pieces that fly off a dead bird
+ *    Pieces that move off a dead bird
  ************************************************************************/
 
+#include "flyer.h"
 #include "effect.h"
 #include <cassert>
 
@@ -55,7 +56,7 @@ double random(double min, double max)
 /************************************************************************
  * FRAGMENT constructor
  *************************************************************************/
-Fragment::Fragment(const Position & pt, const Velocity & v) : Effect(pt)
+Fragment::Fragment(const Position & pt, const Velocity & v) //: Flyer(pt)
 {
    // the velocity is a random kick plus the velocity of the thing that died
    this->v.setDx(v.getDx() * 0.5 + random(-6.0, 6.0));
@@ -64,14 +65,14 @@ Fragment::Fragment(const Position & pt, const Velocity & v) : Effect(pt)
     // age
     age = random(0.4, 1.0);
     
-    // size
-    size = random(1.0, 2.5);
+    // radius
+    radius = random(1.0, 2.5);
 }
 
 /************************************************************************
  * STREEK constructor
  *************************************************************************/
-Streek::Streek(const Position & pt, Velocity v) : Effect(pt)
+Streek::Streek(const Position & pt, Velocity v) : Fragment(pt, v)
 {
    ptEnd = pt;
    v *= -1.0;
@@ -84,7 +85,7 @@ Streek::Streek(const Position & pt, Velocity v) : Effect(pt)
 /************************************************************************
  * EXHAUST constructor
  *************************************************************************/
-Exhaust::Exhaust(const Position & pt, Velocity v) : Effect(pt)
+Exhaust::Exhaust(const Position & pt, Velocity v) : Fragment(pt, v)
 {
     ptEnd = pt;
     v *= -1.0;
@@ -96,15 +97,15 @@ Exhaust::Exhaust(const Position & pt, Velocity v) : Effect(pt)
 
 /***************************************************************/
 /***************************************************************/
-/*                           RENDER                            */
+/*                           draw                            */
 /***************************************************************/
 /***************************************************************/
 
 /************************************************************************
- * FRAGMENT RENDER
+ * FRAGMENT draw
  * Draw the fragment on the screen
  *************************************************************************/
-void Fragment::render() const
+void Fragment::draw() 
 {
     // Do nothing if we are already dead
     if (isDead())
@@ -117,19 +118,19 @@ void Fragment::render() const
     glColor3f((GLfloat)age, (GLfloat)age, (GLfloat)age);
     
     // draw the fragment
-    glVertex2f((GLfloat)(pt.getX() - size), (GLfloat)(pt.getY() - size));
-    glVertex2f((GLfloat)(pt.getX() + size), (GLfloat)(pt.getY() - size));
-    glVertex2f((GLfloat)(pt.getX() + size), (GLfloat)(pt.getY() + size));
-    glVertex2f((GLfloat)(pt.getX() - size), (GLfloat)(pt.getY() + size));
+    glVertex2f((GLfloat)(pt.getX() - radius), (GLfloat)(pt.getY() - radius));
+    glVertex2f((GLfloat)(pt.getX() + radius), (GLfloat)(pt.getY() - radius));
+    glVertex2f((GLfloat)(pt.getX() + radius), (GLfloat)(pt.getY() + radius));
+    glVertex2f((GLfloat)(pt.getX() - radius), (GLfloat)(pt.getY() + radius));
     glColor3f((GLfloat)1.0 /* red % */, (GLfloat)1.0 /* green % */, (GLfloat)1.0 /* blue % */);
     glEnd();
 }
 
 /************************************************************************
- * STREEK RENDER
+ * STREEK draw
  * Draw the shrapnel streek on the screen
  *************************************************************************/
-void Streek::render() const
+void Streek::draw() const
 {
     // Do nothing if we are already dead
     if (isDead())
@@ -148,10 +149,10 @@ void Streek::render() const
 }
 
 /************************************************************************
- * EXHAUST RENDER
+ * EXHAUST draw
  * Draw a missile exhaust on the screen
  *************************************************************************/
-void Exhaust::render() const
+void Exhaust::draw() const
 {
    // Do nothing if we are already dead
    if (isDead())
@@ -171,29 +172,29 @@ void Exhaust::render() const
 
 /***************************************************************/
 /***************************************************************/
-/*                            FLY                              */
+/*                            move                              */
 /***************************************************************/
 /***************************************************************/
 
 /************************************************************************
- * FRAGMENT FLY
+ * FRAGMENT move
  * Move the fragment on the screen
  *************************************************************************/
-void Fragment :: fly()
+void Fragment :: move()
 {
     // move it forward with inertia (no gravity)
     pt += v;
     
     // increase the age so it fades away
     age -= 0.02;
-    size *= 0.95;
+    radius *= 0.95;
 }
 
 /************************************************************************
- * STREEK FLY
+ * STREEK move
  * The streek will just fade away
  *************************************************************************/
-void Streek :: fly()
+void Streek :: move()
 {
     // move it forward with inertia (no gravity)
 //    pt += v;
@@ -203,10 +204,10 @@ void Streek :: fly()
 }
 
 /************************************************************************
- * EXHAUST FLY
+ * EXHAUST move
  * The exhaust will just fade away
  *************************************************************************/
-void Exhaust :: fly()
+void Exhaust :: move()
 {
    // move it forward with inertia (no gravity)
 //   pt += v;

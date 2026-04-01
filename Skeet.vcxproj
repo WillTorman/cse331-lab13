@@ -32,9 +32,11 @@
     <ClCompile Include="uiInteract.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bird - Copy.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="bird.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="flyer.h" />
     <ClInclude Include="gun.h" />
     <ClInclude Include="points.h" />
     <ClInclude Include="position.h" />
